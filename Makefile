@@ -276,6 +276,14 @@ else
 FEATURE_FLAGS += -D'IS_WINDOWS=0'
 endif
 
+ifeq ($(TARGET_OS), $(filter $(TARGET_OS), Darwin))
+$(call mark_unsupported,$(DEPENDS_ON_RAW_MEM_ACCESS))
+$(call mark_unsupported,$(DEPENDS_ON_X86_PORT_IO))
+$(call mark_unsupported,$(DEPENDS_ON_X86_MSR))
+CONFIG_ENABLE_LIBPCI_PROGRAMMERS = no
+CONFIG_RAYER_SPI = no
+endif
+
 # FIXME: Should we check for Cygwin/MSVC as well?
 ifeq ($(TARGET_OS), MinGW)
 # MinGW doesn't have the ffs() function, but we can use gcc's __builtin_ffs().
